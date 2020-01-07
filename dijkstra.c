@@ -1,5 +1,5 @@
 void dijkstra(int** graph, int verticeId){
-  cout << "Minimum cost starting at " << verticeId << ".\n\n";
+  cout << "Minimum cost starting at " << verticeId << ":" << endl;
 
   int vertices[verticesNumber];
 	iota(vertices, vertices + verticesNumber, 0);
@@ -14,24 +14,24 @@ void dijkstra(int** graph, int verticeId){
       dist[i]      = 0;
       verticeIndex = i;
     } else {
-      dist[i] = 999999;
+      dist[i] = INT_MAX;
     }
     visited[i] = 0;
   }
   
   do {
-    my_neighbors neighbors = getVerticeNeighbors(graph, verticeIndex);
+    myNeighbors neighbors = getVerticeNeighbors(graph, verticeIndex);
 
     for (int i = 0; i < neighbors.size(); i++) {
       int neighborIndex = get<0>(neighbors.at(i));
       int cost          = dist[verticeIndex] + get<1>(neighbors.at(i));
     
-      cout << "To " << neighborIndex << ". Cost: " << dist[neighborIndex] << "\n";
+      //cout << "To " << neighborIndex << ". Cost: " << dist[neighborIndex] << "\n";
 
       if (dist[neighborIndex] > cost) {
         dist[neighborIndex] = cost;
 
-        cout << "To " << neighborIndex << ". Updated cost: " << dist[neighborIndex] << "\n";
+        //cout << "To " << neighborIndex << ". Updated cost: " << dist[neighborIndex] << "\n";
       }
     }
 
@@ -46,7 +46,7 @@ void dijkstra(int** graph, int verticeId){
         }
     }
 
-    cout << "\n";
+    //cout << "\n";
   } while (visitedCounter < verticesNumber);
   
   for (int i = 0; i < verticesNumber; i++) {

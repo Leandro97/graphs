@@ -2,12 +2,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef vector<tuple<int, int, int>> my_edges;
-my_edges edges; 
-
-typedef vector<tuple<int, int>> my_neighbors;
-
 int verticesNumber;
+int edgesNumber = 0;
+
+struct Edge {
+  int src;
+  int dest;
+  int cost;
+};
+
+typedef vector<Edge> edgeList;
+edgeList edges; 
+
+typedef vector<tuple<int, int>> myNeighbors;
 
 int** createGraph(unsigned verticesNumber) {
   int** graph = 0;
@@ -17,33 +24,46 @@ int** createGraph(unsigned verticesNumber) {
     graph[row] = new int[verticesNumber];
 
     for(int col = 0; col < verticesNumber; col++){
-      graph[row][col] = 999999;
+      graph[row][col] = -1;
     }
   }
 
   return graph;
 }
 
-void addEdge(int** graph, int origin, int end, int cost) {
-  graph[origin][end] = cost;
-  edges.push_back(tuple<int, int, int> (origin, end, cost));
+void destroyGraph() {
+  edges.clear();
+  verticesNumber = 0;
+  edgesNumber = 0;
 }
 
-void addDoubleEdge(int** graph, int origin, int end, int cost) {
-  addEdge(graph, origin, end, cost);
-  addEdge(graph, end, origin, cost);
+void addEdge(int** graph, int src, int dest, int cost) {
+  graph[src][dest] = cost;
+  
+  Edge newEdge;
+  newEdge.src = src;
+  newEdge.dest = dest;
+  newEdge.cost = cost;
+
+  edges.push_back(newEdge);
+  edgesNumber += 1;
+}
+
+void addDoubleEdge(int** graph, int src, int dest, int cost) {
+  addEdge(graph, src, dest, cost);
+  addEdge(graph, dest, src, cost);
 }
 void printGraph(int ** graph) {
-  for(const auto& i : edges) {
-    cout << "(" << get<0>(i) << ", " << get<1>(i)<< ", " << get<2>(i) << ")" << endl;
+  for(int i = 0; i < edges.size(); i++) {
+    cout << "(" << edges.at(i).src << ", " << edges.at(i).dest << ", " << edges.at(i).cost << ")" << endl;  
   }
 }
 
-my_neighbors getVerticeNeighbors(int** graph, int verticeId) {
-  my_neighbors neighbors; 
+myNeighbors getVerticeNeighbors(int** graph, int verticeId) {
+  myNeighbors neighbors; 
 
   for(int i = 0; i < verticesNumber; i++) {
-    if (graph[verticeId][i] != 999999) {
+    if (graph[verticeId][i] != -1) {
       neighbors.push_back(tuple<int, int> (i, graph[verticeId][i]));
     }
   }
