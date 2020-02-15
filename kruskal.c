@@ -65,9 +65,12 @@ void kruskal(int** graph) {
     }  
   }  
 
+  int cost = 0;
   cout << "MST:" << endl;  
-  for (i = 0; i < e; ++i)  
+  for (i = 0; i < e; ++i) {
     cout << "(" << result[i].src << ", " << result[i].dest << ", " << result[i].cost << ")" << endl;
-
+    cost += result[i].cost;
+  }
+  cout << "Total cost: " << cost << endl;  
   return;  
 }
