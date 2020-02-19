@@ -1,5 +1,6 @@
 #include "graph.c"
 #include "dijkstra.c"
+#include "bellmanFord.c"
 #include "kruskal.c"
 #include "prim.c"
 #include "fordFulkerson.c"
@@ -26,6 +27,26 @@ void runDijkstra() {
   addEdge(graph, 4, 5, 10);
 
   dijkstra(graph, 0);
+  cout << endl;
+  destroyGraph();
+}
+
+void runBellmanFord() {
+  cout << "### Bellman-Ford ###" << endl;
+
+  verticesNumber = 5;
+  int** graph = createGraph(verticesNumber);
+
+  addEdge(graph, 0, 1, -1);
+  addEdge(graph, 0, 2, 4);
+  addEdge(graph, 1, 2, 3);
+  addEdge(graph, 3, 2, 5);
+  addEdge(graph, 1, 3, 1);
+  addEdge(graph, 1, 3, 2);
+  addEdge(graph, 1, 4, 2);
+  addEdge(graph, 4, 3, -3);
+
+  bellmanFord(graph, 0);
   cout << endl;
   destroyGraph();
 }
@@ -106,10 +127,9 @@ void runFordFulkerson() {
 
 int main() {
   runDijkstra();
+  runBellmanFord();
   runKruskal();
   runPrim();
-  runFordFulkerson();
-  runBellmanFord();
-  
+  runFordFulkerson();  
   return 0;
 }
